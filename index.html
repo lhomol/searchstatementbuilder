@@ -57,43 +57,7 @@
             flex-direction: column;
         }
 
-        /* ── Skip link ── */
-        .skip-link {
-            position: absolute;
-            top: -100%;
-            left: 16px;
-            background: var(--color-primary);
-            color: var(--color-white);
-            padding: 8px 16px;
-            border-radius: 0 0 4px 4px;
-            z-index: 100;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 0.9em;
-        }
-        .skip-link:focus {
-            top: 0;
-        }
-
-        /* ── Header ── */
-        .head {
-            width: 100%;
-            background-color: var(--color-white);
-            padding: 0 50px;
-            height: 72px;
-            display: flex;
-            align-items: center;
-            box-shadow: var(--shadow-header);
-            position: relative;
-            z-index: 10;
-            flex-shrink: 0;
-        }
-        .head-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--color-text);
-            letter-spacing: -0.01em;
-        }
+      
 
         /* ── Main container ── */
         .container {
@@ -512,39 +476,7 @@
             margin-bottom: 24px;
         }
 
-        /* ── Footer ── */
-        .foot {
-            width: 100%;
-            padding: 14px 50px;
-            background-color: var(--color-footer-bg);
-            color: var(--color-footer-text);
-            font-family: var(--font-main);
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-        .foot a {
-            color: var(--color-footer-text);
-            text-decoration: none;
-        }
-        .foot a:hover, .foot a:focus {
-            color: var(--color-white);
-            text-decoration: underline;
-        }
-        .s-lib-footer {
-            background-color: var(--color-footer-secondary);
-            color: #DBDBDB;
-            width: 100%;
-            padding: 8px 50px;
-            font-size: 0.8rem;
-        }
-        .s-lib-footer a {
-            color: #DBDBDB;
-            text-decoration: none;
-        }
-        .s-lib-footer a:hover, .s-lib-footer a:focus {
-            color: var(--color-white);
-            text-decoration: underline;
-        }
+       
 
         /* ── Responsive ── */
         @media (max-width: 768px) {
@@ -562,18 +494,14 @@
 </head>
 <body>
 
-    <!-- Skip navigation link -->
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+   
 
-    <!-- Header -->
-    <header class="head" role="banner">
-        <div class="head-title">Search Statement Builder</div>
-    </header>
+    
 
     <!-- Main content -->
     <main id="main-content" class="container">
         <div class="page-title-area">
-            <h1>Boolean Search Builder</h1>
+            <h1>Search Statement Builder</h1>
             <p>Build search statements for academic databases step by step.</p>
         </div>
 
@@ -733,15 +661,7 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="foot">
-            Boolean Search Builder &mdash; Powered by Library Tutorials
-        </div>
-        <div class="s-lib-footer">
-            &copy; Library &nbsp;|&nbsp; <a href="#">Ask a Librarian</a> &nbsp;|&nbsp; <a href="#">Subject Guides</a>
-        </div>
-    </footer>
+   
 
     <script>
         const synonyms = {
