@@ -26,12 +26,8 @@
             --color-bg: #f4f4f4;
             --color-white: #ffffff;
             --color-border: #dcdce0;
-            --color-footer-bg: #000000;
-            --color-footer-secondary: #444444;
-            --color-footer-text: #DCDCE0;
             --color-success: #2e7d32;
             --color-success-bg: #e8f5e9;
-            --shadow-header: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
             --font-main: 'Lato', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
         }
 
@@ -57,8 +53,7 @@
             flex-direction: column;
         }
 
-      
-
+        
         /* ── Main container ── */
         .container {
             max-width: 1100px;
@@ -270,6 +265,41 @@
             font-weight: 700;
         }
 
+        /* ── Input summary ── */
+        .input-summary {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-left: 4px solid var(--color-accent);
+            border-radius: 4px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .input-summary h3 {
+            color: var(--color-accent-dark);
+            font-size: 0.95em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .input-summary .summary-item {
+            margin-bottom: 4px;
+            color: var(--color-text-light);
+        }
+
+        .input-summary .summary-label {
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .input-summary .summary-synonyms {
+            color: var(--color-text-muted);
+            font-style: italic;
+            margin-left: 4px;
+        }
+
         .concept-visual {
             margin-bottom: 12px;
             padding: 12px 14px;
@@ -303,9 +333,18 @@
         }
 
         .operator {
-            color: var(--color-primary-hover);
             font-weight: 900;
             margin: 0 6px;
+            background: transparent;
+            border: none;
+        }
+
+        .synonym-visual .operator-and {
+            color: var(--color-primary-hover);
+        }
+
+        .synonym-visual .operator-or {
+            color: #1e6e33;
         }
 
         /* ── Result section ── */
@@ -440,18 +479,14 @@
 
         /* ── Video ── */
         .video-container {
+            margin-top: 12px;
             margin-bottom: 22px;
         }
 
-        .video-placeholder {
-            background: transparent;
-            border: none;
-            padding: 0;
-        }
-
-        .video-placeholder h3 {
+        .video-container h2,
+        .video-container h3 {
             color: var(--color-text);
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             font-size: 1em;
             font-weight: 700;
         }
@@ -459,6 +494,7 @@
         .video-embed {
             border-radius: 4px;
             text-align: center;
+            margin-top: 12px;
         }
 
         .video-embed iframe {
@@ -466,6 +502,78 @@
             max-width: 800px;
             height: 450px;
             border-radius: 4px;
+        }
+
+        /* ── Transcript disclosure ── */
+        .transcript-disclosure {
+            margin-top: 10px;
+            max-width: 800px;
+        }
+
+        /* ── Video skip link (visible only on focus) ── */
+        .video-skip-link {
+            display: block;
+            position: absolute;
+            left: -9999px;
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 6px 14px;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 0.85em;
+            text-decoration: none;
+            z-index: 5;
+            white-space: nowrap;
+        }
+
+        .video-skip-link:focus {
+            position: relative;
+            left: auto;
+            display: inline-block;
+            margin-bottom: 8px;
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+        }
+
+        .transcript-disclosure summary {
+            cursor: pointer;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 0.9em;
+            padding: 6px 0;
+            list-style: revert;
+        }
+
+        .transcript-disclosure summary:hover,
+        .transcript-disclosure summary:focus {
+            color: var(--color-primary-hover);
+        }
+
+        .transcript-disclosure summary:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+        }
+
+        .transcript-content {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-left: 4px solid var(--color-accent);
+            border-radius: 0 4px 4px 0;
+            padding: 16px 18px;
+            margin-top: 8px;
+            font-size: 0.9em;
+            line-height: 1.7;
+            color: var(--color-text-light);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .transcript-content p {
+            margin-bottom: 10px;
+        }
+
+        .transcript-content p:last-child {
+            margin-bottom: 0;
         }
 
         /* ── Student info grid ── */
@@ -477,10 +585,8 @@
         }
 
        
-
         /* ── Responsive ── */
         @media (max-width: 768px) {
-            .head { padding: 0 20px; }
             .container { padding: 20px 16px 40px; }
             .section { padding: 20px; }
             .result-section { padding: 20px; }
@@ -488,29 +594,36 @@
             .button-group { flex-direction: column; }
             .btn { width: 100%; }
             .video-embed iframe { height: 300px; }
-            .foot, .s-lib-footer { padding-left: 20px; padding-right: 20px; }
         }
     </style>
 </head>
 <body>
 
-   
-
     
-
     <!-- Main content -->
     <main id="main-content" class="container">
         <div class="page-title-area">
-            <h1>Search Statement Builder</h1>
-            <p>Build search statements for academic databases step by step.</p>
+            <h1>Boolean Search Builder</h1>
+            <p>Build professional search statements for academic databases step by step.</p>
         </div>
 
         <!-- Intro Video -->
         <div class="video-container">
             <h2>Video Tutorial: Search statement introduction</h2>
+            <a class="video-skip-link" href="#transcript-intro">Skip video, jump to transcript</a>
             <div class="video-embed">
                 <iframe src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=74f805a7-d3c2-4bc3-8741-b3f001349fa2&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" style="border: 1px solid #464646;" allowfullscreen allow="autoplay" title="Video Tutorial: Search statement introduction" aria-label="Panopto Embedded Video Player"></iframe>
             </div>
+            <details class="transcript-disclosure" id="transcript-intro">
+                <summary>View transcript</summary>
+                <div class="transcript-content">
+                    <p>As a doctoral student, you'll need to search traditional library databases alongside AI tools to ensure comprehensive literature reviews.</p>
+                    <p>Unlike AI or Google, library databases don't understand full questions. Instead, they require search statements — combinations of specific keywords, phrases, and symbols. Databases match your exact words to words in article titles, abstracts, and subject terms, so choosing the right terms is crucial.</p>
+                    <p>The videos on this page will teach you how to construct search statements for your own research. After each video, you'll enter information about your topic into the fields below. Once complete, the tool will generate a ready-to-use search statement that you can copy into any database.</p>
+                    <p>Your first search rarely gives perfect results. Expect to refine your search several times as you learn what language researchers use in your field. Use this builder as often as needed. After a few times, you'll be able to construct search statements on your own.</p>
+                    <p>The first step is defining your research question or topic. Enter yours in the box below.</p>
+                </div>
+            </details>
         </div>
 
         <!-- Student Information -->
@@ -534,9 +647,20 @@
 
             <div class="video-container">
                 <h3>Video Tutorial: Identifying Key Concepts</h3>
+                <a class="video-skip-link" href="#transcript-concepts">Skip video, jump to transcript</a>
                 <div class="video-embed">
                     <iframe src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=c672950a-f3cd-49b7-8e9a-b41d0118cabb&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" style="border: 1px solid #464646;" allowfullscreen allow="autoplay" title="Video Tutorial: Identifying Key Concepts" aria-label="Panopto Embedded Video Player"></iframe>
                 </div>
+                <details class="transcript-disclosure" id="transcript-concepts">
+                    <summary>View transcript</summary>
+                    <div class="transcript-content">
+                        <p>Next, you'll break your question into key concepts — the main ideas you're exploring. Use the who, what, where framework.</p>
+                        <p>What is the central phenomenon you're exploring? For example, student engagement, literacy intervention. Who is impacted by that phenomenon? For example, undergraduate students, teachers, administrators. And where does it occur? For example, elementary schools, online learning, community colleges.</p>
+                        <p>Three key concepts is ideal for most searches. More than three often returns too few results. Fewer than three key concepts can return thousands of irrelevant results. You can always adjust after trying out your search. Add a concept if results are too broad, or remove one if you're getting too few results.</p>
+                        <p>When you're developing your key concepts, focus on nouns — they're the most effective search terms. Keep concepts simple and specific. Instead of vague terms like "effect" or "impact," use concrete outcomes like "retention" or "academic success."</p>
+                        <p>Looking at the research question you've entered into the box above, identify your three key concepts and enter them in the boxes below this video. If your question has multiple parts, start with the most essential three concepts. You can build additional searches for other aspects later.</p>
+                    </div>
+                </details>
             </div>
 
             <div class="tips-box">
@@ -548,6 +672,8 @@
                     <li>3 key concepts is a good place to start</li>
                 </ul>
             </div>
+
+            <div id="summarySection1"></div>
 
             <div class="concept-group">
                 <label class="concept-label" for="concept1">
@@ -580,9 +706,20 @@
 
             <div class="video-container">
                 <h3>Video Tutorial: Adding Synonyms &amp; Alternative Terms</h3>
+                <a class="video-skip-link" href="#transcript-synonyms">Skip video, jump to transcript</a>
                 <div class="video-embed">
                     <iframe src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=ea3bf611-51f2-4bff-af74-b41d0119b0fb&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" style="border: 1px solid #464646;" allowfullscreen allow="autoplay" title="Video Tutorial: Adding Synonyms and Alternative Terms" aria-label="Panopto Embedded Video Player"></iframe>
                 </div>
+                <details class="transcript-disclosure" id="transcript-synonyms">
+                    <summary>View transcript</summary>
+                    <div class="transcript-content">
+                        <p>Now brainstorm alternate ways to phrase each key concept. Databases search for your exact words, so thinking of variations helps you find more comprehensive results.</p>
+                        <p>For example, if one concept is "open educational resources," you'd also want to search OER, open textbooks, and free textbooks. Think, too, of the language that might be used in the literature versus the classroom. Teachers may use "teaching methods," while researchers might use "pedagogy."</p>
+                        <p>When brainstorming your alternate terms, consider abbreviations or acronyms (things like ELL, STEM, OER), synonyms (college students versus undergraduates), related terms (academic success versus student achievement versus GPA), and broader or narrower terms (teachers versus elementary teachers, assessment versus formative assessment).</p>
+                        <p>Enter at least one alternate term for each of your three key concepts in the boxes below. More alternatives should equal more results.</p>
+                        <p>Most databases automatically search both singular and plural forms — so for example, "teacher" would also search "teachers." So you don't need to enter both. If you're typing more than one alternate term per key concept, remember to hit Enter between examples.</p>
+                    </div>
+                </details>
             </div>
 
             <div class="tips-box">
@@ -597,6 +734,8 @@
             <div class="example-box">
                 <strong>Example:</strong> For "open educational resources" you might add: OERs, open textbooks, free textbooks
             </div>
+
+            <div id="summarySection2"></div>
 
             <div class="concept-group">
                 <label class="concept-label" for="synonym1Input">Synonyms for WHAT concept <span class="helper-text">(Press Enter after EACH synonym)</span></label>
@@ -632,9 +771,22 @@
 
             <div class="video-container">
                 <h3>Video Tutorial: Understanding Boolean Operators (AND, OR)</h3>
+                <a class="video-skip-link" href="#transcript-operators">Skip video, jump to transcript</a>
                 <div class="video-embed">
                     <iframe src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=9e130abf-dba7-4bbb-bbd0-b41d01181611&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" style="border: 1px solid #464646;" allowfullscreen allow="autoplay" title="Video Tutorial: Understanding Boolean Operators" aria-label="Panopto Embedded Video Player"></iframe>
                 </div>
+                <details class="transcript-disclosure" id="transcript-operators">
+                    <summary>View transcript</summary>
+                    <div class="transcript-content">
+                        <p>As you entered terms, you saw them appear in the search structure below this video. Let's break down what's happening.</p>
+                        <p>AND connects your key concepts. It tells databases to find results mentioning all of the concepts, which narrows your search. More concepts equal fewer results.</p>
+                        <p>OR connects synonyms. It tells databases to find results mentioning any of the linked terms, which broadens your search. More synonyms equals more results.</p>
+                        <p>Parentheses group OR terms together, like order of operations in math. They tell databases: first find articles with any of these synonyms inside parentheses, then keep only results that mention the next concept connected by AND outside the parentheses.</p>
+                        <p>Quotation marks appear around multi-word phrases like "academic success." They tell databases to search those exact words together in that order, improving relevance. This visual representation shows how all components work together.</p>
+                        <p>When you're ready, click Generate Search Statement to create a copyable version for the database of your choosing.</p>
+                        <p>After searching, you can continue to refine your statement. Keep terms that appear frequently in relevant results — look for the highlights in titles, abstracts, or subject terms. Add new terms you notice in highly relevant articles, and remove terms that don't appear or only show up in irrelevant results. This iterative process helps each search get closer to your target literature.</p>
+                    </div>
+                </details>
             </div>
 
             <div class="visual-formula" id="visualFormula" aria-live="polite" aria-atomic="true">
@@ -661,14 +813,19 @@
         </section>
     </main>
 
-   
-
     <script>
         const synonyms = {
             concept1: [],
             concept2: [],
             concept3: []
         };
+
+        // Sanitize user input before inserting into innerHTML
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
 
         function setupSynonymInput(inputId, conceptKey, displayId) {
             const input = document.getElementById(inputId);
@@ -688,12 +845,14 @@
 
         function renderSynonyms(conceptKey, displayId) {
             const container = document.getElementById(displayId);
-            container.innerHTML = synonyms[conceptKey].map((syn, index) => `
+            container.innerHTML = synonyms[conceptKey].map((syn, index) => {
+                const safeSyn = escapeHTML(syn);
+                return `
                 <div class="tag" role="listitem">
-                    ${syn}
-                    <button type="button" class="remove-tag" aria-label="Remove synonym: ${syn}" onclick="removeSynonym('${conceptKey}', ${index}, '${displayId}')">&times;</button>
+                    ${safeSyn}
+                    <button type="button" class="remove-tag" aria-label="Remove synonym: ${safeSyn}" onclick="removeSynonym('${conceptKey}', ${index}, '${displayId}')">&times;</button>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function removeSynonym(conceptKey, index, displayId) {
@@ -710,22 +869,58 @@
             document.getElementById(id).addEventListener('input', updateVisualFormula);
         });
 
+        document.getElementById('researchTopic').addEventListener('input', updateVisualFormula);
+
         function updateVisualFormula() {
             const formula = document.getElementById('visualFormula');
-            const concepts = [
-                { main: document.getElementById('concept1').value, syns: synonyms.concept1 },
-                { main: document.getElementById('concept2').value, syns: synonyms.concept2 },
-                { main: document.getElementById('concept3').value, syns: synonyms.concept3 }
-            ].filter(c => c.main.trim() !== '');
+            const summary1 = document.getElementById('summarySection1');
+            const summary2 = document.getElementById('summarySection2');
+            const researchTopic = document.getElementById('researchTopic').value.trim();
+            const conceptData = [
+                { label: 'WHAT', main: document.getElementById('concept1').value, syns: synonyms.concept1 },
+                { label: 'WHO', main: document.getElementById('concept2').value, syns: synonyms.concept2 },
+                { label: 'WHERE/ADDITIONAL', main: document.getElementById('concept3').value, syns: synonyms.concept3 }
+            ];
+            const activeConcepts = conceptData.filter(c => c.main.trim() !== '');
 
-            if (concepts.length === 0) {
+            // Section 1 summary: show research topic so user can reference it while entering concepts
+            if (researchTopic) {
+                summary1.innerHTML = '<div class="input-summary"><h3>Your Research Topic:</h3>'
+                    + `<div class="summary-item">${escapeHTML(researchTopic)}</div></div>`;
+            } else {
+                summary1.innerHTML = '';
+            }
+
+            // Section 2 summary: show research topic + concepts so user can reference them while adding synonyms
+            if (researchTopic || activeConcepts.length > 0) {
+                let s2 = '<div class="input-summary"><h3>Your Inputs So Far:</h3>';
+                if (researchTopic) {
+                    s2 += `<div class="summary-item"><span class="summary-label">Research Topic:</span> ${escapeHTML(researchTopic)}</div>`;
+                }
+                conceptData.forEach(c => {
+                    if (c.main.trim()) {
+                        s2 += `<div class="summary-item"><span class="summary-label">${escapeHTML(c.label)}:</span> ${escapeHTML(c.main)}`;
+                        if (c.syns.length > 0) {
+                            s2 += `<span class="summary-synonyms">(also: ${c.syns.map(escapeHTML).join(', ')})</span>`;
+                        }
+                        s2 += '</div>';
+                    }
+                });
+                s2 += '</div>';
+                summary2.innerHTML = s2;
+            } else {
+                summary2.innerHTML = '';
+            }
+
+            // Build visual formula
+            if (activeConcepts.length === 0) {
                 formula.innerHTML = '<h3>How Your Search Will Be Built:</h3><p class="empty-state">Start adding concepts and synonyms above to see how they connect...</p>';
                 return;
             }
 
             let html = '<h3>How Your Search Will Be Built:</h3>';
 
-            concepts.forEach((concept, index) => {
+            activeConcepts.forEach((concept, index) => {
                 const allTerms = [concept.main, ...concept.syns];
                 html += '<div class="concept-visual">';
                 html += `<div class="concept-visual-label">Concept ${index + 1}:</div>`;
@@ -734,10 +929,11 @@
                 if (allTerms.length > 1) html += '( ';
 
                 allTerms.forEach((term, termIndex) => {
+                    const safeTerm = escapeHTML(term.trim());
                     const needsQuotes = term.trim().split(/\s+/).length > 1;
-                    html += `<span>${needsQuotes ? '"' + term + '"' : term}</span>`;
+                    html += `<span>${needsQuotes ? '"' + safeTerm + '"' : safeTerm}</span>`;
                     if (termIndex < allTerms.length - 1) {
-                        html += '<span class="operator" aria-label="OR operator">OR</span>';
+                        html += '<span class="operator operator-or" aria-label="OR operator">OR</span>';
                     }
                 });
 
@@ -745,8 +941,8 @@
 
                 html += '</div></div>';
 
-                if (index < concepts.length - 1) {
-                    html += '<div style="text-align: center; margin: 10px 0;"><span class="operator" style="font-size: 1.2em;" aria-label="AND operator">AND</span></div>';
+                if (index < activeConcepts.length - 1) {
+                    html += '<div style="text-align: center; margin: 10px 0;"><span class="operator operator-and" style="font-size: 1.2em;" aria-label="AND operator">AND</span></div>';
                 }
             });
 
@@ -900,10 +1096,19 @@
 
         function showFeedback(message, type) {
             const feedbackDiv = document.getElementById('feedbackMessage');
-            feedbackDiv.className = `feedback-message feedback-${type}`;
-            feedbackDiv.textContent = message;
-            feedbackDiv.style.display = 'block';
-            setTimeout(() => { feedbackDiv.style.display = 'none'; }, 3000);
+            // Clear first so screen readers detect the change as new content
+            feedbackDiv.textContent = '';
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.className = '';
+
+            // Set new content in next frame so aria-live registers the update
+            requestAnimationFrame(() => {
+                feedbackDiv.className = `feedback-message feedback-${type}`;
+                feedbackDiv.textContent = message;
+                feedbackDiv.style.display = 'block';
+
+                setTimeout(() => { feedbackDiv.style.display = 'none'; }, 3000);
+            });
         }
     </script>
 </body>
