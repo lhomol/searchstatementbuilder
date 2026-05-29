@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; frame-src https://northeastern.hosted.panopto.com;">
     <title>Boolean Search Builder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -634,7 +635,7 @@
             </div>
             <div>
                 <label class="concept-label" for="researchTopic">Research Question/Topic</label>
-                <input type="text" id="researchTopic" placeholder="E.g., Do OERs increase academic success for undergraduates?">
+                <input type="text" id="researchTopic" maxlength="500" placeholder="E.g., Do OERs increase academic success for undergraduates?">
             </div>
         </section>
 
@@ -679,21 +680,21 @@
                 <label class="concept-label" for="concept1">
                     WHAT <span class="helper-text">(The central idea or phenomenon)</span>
                 </label>
-                <input type="text" id="concept1" placeholder="E.g., open educational resources">
+                <input type="text" id="concept1" maxlength="200" placeholder="E.g., open educational resources">
             </div>
 
             <div class="concept-group">
                 <label class="concept-label" for="concept2">
                     WHO <span class="helper-text">(The population impacted)</span>
                 </label>
-                <input type="text" id="concept2" placeholder="E.g., undergraduate students">
+                <input type="text" id="concept2" maxlength="200" placeholder="E.g., undergraduate students">
             </div>
 
             <div class="concept-group">
                 <label class="concept-label" for="concept3">
                     WHERE/ADDITIONAL CONCEPT <span class="helper-text">(Context, location, or another key concept)</span>
                 </label>
-                <input type="text" id="concept3" placeholder="E.g., academic success">
+                <input type="text" id="concept3" maxlength="200" placeholder="E.g., academic success">
             </div>
         </section>
 
@@ -740,7 +741,7 @@
             <div class="concept-group">
                 <label class="concept-label" for="synonym1Input">Synonyms for WHAT concept <span class="helper-text">(Press Enter after EACH synonym)</span></label>
                 <div class="synonym-input">
-                    <input type="text" id="synonym1Input" placeholder="Type one synonym, then press Enter (repeat for each)">
+                    <input type="text" id="synonym1Input" maxlength="200" placeholder="Type one synonym, then press Enter (repeat for each)">
                 </div>
                 <div class="synonym-tags" id="synonyms1" role="list" aria-label="WHAT concept synonyms"></div>
             </div>
@@ -748,7 +749,7 @@
             <div class="concept-group">
                 <label class="concept-label" for="synonym2Input">Synonyms for WHO concept <span class="helper-text">(Press Enter after EACH synonym)</span></label>
                 <div class="synonym-input">
-                    <input type="text" id="synonym2Input" placeholder="Type one synonym, then press Enter (repeat for each)">
+                    <input type="text" id="synonym2Input" maxlength="200" placeholder="Type one synonym, then press Enter (repeat for each)">
                 </div>
                 <div class="synonym-tags" id="synonyms2" role="list" aria-label="WHO concept synonyms"></div>
             </div>
@@ -756,7 +757,7 @@
             <div class="concept-group">
                 <label class="concept-label" for="synonym3Input">Synonyms for WHERE/ADDITIONAL concept <span class="helper-text">(Press Enter after EACH synonym)</span></label>
                 <div class="synonym-input">
-                    <input type="text" id="synonym3Input" placeholder="Type one synonym, then press Enter (repeat for each)">
+                    <input type="text" id="synonym3Input" maxlength="200" placeholder="Type one synonym, then press Enter (repeat for each)">
                 </div>
                 <div class="synonym-tags" id="synonyms3" role="list" aria-label="WHERE/ADDITIONAL concept synonyms"></div>
             </div>
@@ -820,11 +821,21 @@
             concept3: []
         };
 
-        // Sanitize user input before inserting into innerHTML
+        // Sanitize user input before inserting into text content via innerHTML
         function escapeHTML(str) {
             const div = document.createElement('div');
             div.appendChild(document.createTextNode(str));
             return div.innerHTML;
+        }
+
+        // Sanitize user input before inserting into HTML attribute values
+        function escapeAttr(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
         }
 
         function setupSynonymInput(inputId, conceptKey, displayId) {
@@ -847,12 +858,20 @@
             const container = document.getElementById(displayId);
             container.innerHTML = synonyms[conceptKey].map((syn, index) => {
                 const safeSyn = escapeHTML(syn);
+                const safeLabel = escapeAttr('Remove synonym: ' + syn);
                 return `
                 <div class="tag" role="listitem">
                     ${safeSyn}
-                    <button type="button" class="remove-tag" aria-label="Remove synonym: ${safeSyn}" onclick="removeSynonym('${conceptKey}', ${index}, '${displayId}')">&times;</button>
+                    <button type="button" class="remove-tag" aria-label="${safeLabel}" data-concept="${escapeAttr(conceptKey)}" data-index="${index}" data-display="${escapeAttr(displayId)}">&times;</button>
                 </div>
             `}).join('');
+
+            // Attach event listeners after rendering (avoids inline onclick entirely)
+            container.querySelectorAll('.remove-tag').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    removeSynonym(btn.dataset.concept, parseInt(btn.dataset.index, 10), btn.dataset.display);
+                });
+            });
         }
 
         function removeSynonym(conceptKey, index, displayId) {
@@ -1052,28 +1071,6 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             showFeedback('Downloaded successfully!', 'success');
-        }
-
-        function emailResults() {
-            const output = document.getElementById('output').textContent;
-            if (output.includes('Your formatted search statement will appear here')) {
-                showFeedback('Please generate a search statement first.', 'error');
-                return;
-            }
-
-            const studentName = document.getElementById('studentName') ? document.getElementById('studentName').value : 'Student';
-            const researchTopic = document.getElementById('researchTopic').value || 'Research Topic';
-
-            const subject = encodeURIComponent(`Boolean Search Submission - ${studentName}`);
-            const body = encodeURIComponent(
-                `Student: ${studentName}\n` +
-                `Research Topic: ${researchTopic}\n\n` +
-                `Boolean Search Statement:\n${output}\n\n` +
-                `---\nGenerated using Boolean Search Builder`
-            );
-
-            window.location.href = `mailto:l.Homol@northeastern.edu?subject=${subject}&body=${body}`;
-            showFeedback('Opening email client...', 'success');
         }
 
         function clearAll() {
